@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<aop:aspectj-autoproxy />
+	<bean id="helloWorldService"
+		class="cn.javass.spring.cxy.AOPtest.service.impl.HelloWorldServiceImpl" />
+	<bean id="aspect" class="cn.javass.spring.cxy.AOPtest.aop.HelloWorldAspect2" />
+	<aop:config>
+		<aop:pointcut id="pointcut" expression="execution(* cn.javass..*.*(..))" />
+		<aop:aspect ref="aspect">
+			<aop:before pointcut="execution(* cn.javass..*.sayBefore(..)) and args(param)"
+				method="beforeAdvice(java.lang.String)" arg-names="param" />
+			<aop:after-returning
+				pointcut="execution(* cn.javass..*.sayAfterReturning(..))" method="afterReturningAdvice"
+				arg-names="retVal" returning="retVal" />
+			<aop:around pointcut="execution(* cn.javass..*.sayAround(..))"
+				method="aroundAdvice" />
+			<aop:after pointcut="execution(* cn.javass..*.*(..))"
+				method="afterFinallyAdvice" />
+		</aop:aspect>
+	</aop:config>
+</beans>
